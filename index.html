@@ -3,22 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teravenaq — Portofolio</title>
-<meta name="description" content="Portofolio Teravenaq — web developer yang suka bikin tool berguna & open source.">
+<title>Teravenaq — Web Developer & Open Source Builder</title>
+<meta name="description" content="Portofolio Teravenaq — web developer yang suka bikin tool client-side yang cepat, privat, dan open source.">
+<meta property="og:title" content="Teravenaq — Portofolio">
+<meta property="og:description" content="Web developer & open source builder. Tools client-side yang cepat & privat.">
+<meta property="og:url" content="https://teravenaq.github.io/portofolio/">
+<meta name="theme-color" content="#0d0f14">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗿</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#0d0f14;
-    --panel:#151823;
-    --panel-2:#1b1f2e;
-    --border:rgba(255,255,255,0.09);
-    --text:#e8e6e1;
+    --ink:#0a0c11;
+    --panel:rgba(21,24,35,0.72);
+    --panel-solid:#151823;
+    --border:rgba(255,255,255,0.08);
+    --text:#eceae6;
     --dim:#9aa0af;
-    --green:#5fb87a;
-    --amber:#d9a441;
-    --focus:#7fb0e0;
-    --grad:linear-gradient(135deg, #5fb87a 0%, #7fb0e0 100%);
+    --green:#5fd08a;
+    --blue:#7fb0e0;
+    --amber:#e8b957;
+    --grad:linear-gradient(120deg,#5fd08a,#7fb0e0 55%,#b78ae8);
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -26,340 +32,435 @@
   body{
     background:var(--ink);
     color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
+    font-family:'IBM Plex Sans',sans-serif;
     line-height:1.6;
+    overflow-x:hidden;
   }
-  ::selection{background:rgba(95,184,122,0.3);}
+  ::selection{background:rgba(95,208,138,0.35);}
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--ink);}
+  ::-webkit-scrollbar-thumb{background:#2a3040;border-radius:5px;}
+  ::-webkit-scrollbar-thumb:hover{background:#3a4256;}
+
+  /* ── ambient background ── */
+  .bg{position:fixed;inset:0;z-index:-2;pointer-events:none;}
+  .bg .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.5;animation:drift 22s ease-in-out infinite alternate;}
+  .orb-a{width:520px;height:520px;background:radial-gradient(circle,rgba(95,208,138,0.20),transparent 65%);top:-140px;left:-120px;}
+  .orb-b{width:620px;height:620px;background:radial-gradient(circle,rgba(127,176,224,0.16),transparent 65%);top:30%;right:-200px;animation-delay:-8s;}
+  .orb-c{width:480px;height:480px;background:radial-gradient(circle,rgba(183,138,232,0.13),transparent 65%);bottom:-160px;left:24%;animation-delay:-15s;}
+  @keyframes drift{
+    0%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(60px,-40px) scale(1.12);}
+    100%{transform:translate(-40px,50px) scale(0.95);}
+  }
+  .bg .grid-overlay{
+    position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse 90% 70% at 50% 30%,black 30%,transparent 75%);
+    -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 30%,black 30%,transparent 75%);
+  }
+
+  /* ── progress bar ── */
+  #progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--grad);z-index:200;transition:width .1s linear;}
 
   /* ── NAV ── */
-  nav{
-    position:fixed; top:0; left:0; right:0; z-index:100;
-    background:rgba(13,15,20,0.85);
-    backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--border);
-  }
-  .nav-inner{
-    max-width:1040px; margin:0 auto; padding:14px 24px;
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  .logo{
-    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:17px;
-    text-decoration:none; color:var(--text);
-  }
-  .logo span{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
-  .nav-links{display:flex; gap:22px;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .25s,border-color .25s;border-bottom:1px solid transparent;}
+  nav.scrolled{background:rgba(10,12,17,0.82);backdrop-filter:blur(14px);border-bottom-color:var(--border);}
+  .nav-inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:9px;}
+  .logo .dot{width:9px;height:9px;border-radius:50%;background:var(--grad);box-shadow:0 0 12px rgba(95,208,138,0.7);animation:pulse 2.4s ease-in-out infinite;}
+  @keyframes pulse{50%{box-shadow:0 0 3px rgba(95,208,138,0.4);}}
+  .nav-links{display:flex;gap:6px;}
   .nav-links a{
-    color:var(--dim); text-decoration:none; font-size:13.5px; font-weight:500;
-    transition:color .15s;
+    color:var(--dim);text-decoration:none;font-size:13.5px;font-weight:500;
+    padding:7px 14px;border-radius:8px;transition:color .15s,background .15s;
   }
-  .nav-links a:hover{color:var(--green);}
-  @media (max-width:640px){ .nav-links{display:none;} }
+  .nav-links a:hover{color:var(--text);background:rgba(255,255,255,0.05);}
+  .nav-cta{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--green)!important;
+    border:1px solid rgba(95,208,138,0.35);border-radius:8px;padding:7px 14px!important;
+    transition:background .15s!important;
+  }
+  .nav-cta:hover{background:rgba(95,208,138,0.1)!important;}
+  @media (max-width:700px){ .nav-links a:not(.nav-cta){display:none;} }
 
   /* ── HERO ── */
-  .hero{
-    min-height:100vh;
-    display:flex; align-items:center; justify-content:center;
-    text-align:center; padding:100px 24px 60px;
-    position:relative; overflow:hidden;
+  .hero{min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:110px 24px 70px;position:relative;}
+  .hero-inner{max-width:780px;position:relative;}
+  .status-pill{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--dim);
+    background:var(--panel);border:1px solid var(--border);border-radius:20px;
+    padding:7px 16px;margin-bottom:30px;
   }
-  .hero::before{
-    content:''; position:absolute; inset:0;
-    background:
-      radial-gradient(600px 300px at 20% 30%, rgba(95,184,122,0.10), transparent),
-      radial-gradient(600px 300px at 80% 70%, rgba(127,176,224,0.10), transparent);
-    pointer-events:none;
+  .status-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+  .avatar-wrap{width:150px;height:150px;margin:0 auto 30px;border-radius:50%;padding:3px;background:var(--grad);position:relative;}
+  .avatar-wrap::after{
+    content:'';position:absolute;inset:-9px;border-radius:50%;
+    border:1px dashed rgba(255,255,255,0.18);
+    animation:spin 24s linear infinite;
   }
-  .hero-inner{position:relative; max-width:720px;}
-  .avatar-wrap{
-    width:130px; height:130px; margin:0 auto 26px; border-radius:50%;
-    padding:3px; background:var(--grad);
-  }
-  .avatar-wrap img{
-    width:100%; height:100%; border-radius:50%; object-fit:cover;
-    border:3px solid var(--ink); display:block;
-  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .avatar-wrap img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:4px solid var(--ink);display:block;}
   h1{
-    font-family:'Space Grotesk', sans-serif;
-    font-size:clamp(34px, 6vw, 56px);
-    font-weight:700; margin:0 0 6px; letter-spacing:-0.02em;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(38px,7vw,68px);font-weight:700;margin:0 0 14px;letter-spacing:-0.025em;line-height:1.08;
   }
-  h1 span{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
   .tagline{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:clamp(14px, 2.4vw, 18px);
-    color:var(--dim); margin:0 0 30px; min-height:1.6em;
+    font-family:'IBM Plex Mono',monospace;font-size:clamp(14px,2.4vw,19px);
+    color:var(--dim);margin:0 0 14px;min-height:1.7em;
   }
-  .tagline .cursor{display:inline-block; width:9px; background:var(--green); margin-left:3px; animation:blink 1s steps(1) infinite;}
+  .tagline .cursor{display:inline-block;width:10px;height:1.15em;vertical-align:text-bottom;background:var(--green);margin-left:4px;animation:blink 1s steps(1) infinite;}
   @keyframes blink{50%{opacity:0;}}
-  .hero-btns{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  .hero-sub{color:var(--dim);font-size:15px;max-width:520px;margin:0 auto 36px;line-height:1.7;}
+  .hero-sub strong{color:var(--text);}
+  .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
   .btn{
-    display:inline-block; padding:13px 28px; border-radius:8px;
-    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px;
-    text-decoration:none; transition:transform .15s, filter .15s;
+    display:inline-flex;align-items:center;gap:8px;padding:14px 30px;border-radius:10px;
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14.5px;
+    text-decoration:none;transition:transform .18s,box-shadow .18s,background .18s;
   }
-  .btn:hover{transform:translateY(-2px); filter:brightness(1.1);}
-  .btn-primary{background:var(--grad); color:#0d1510;}
-  .btn-ghost{border:1px solid var(--border); color:var(--text); background:rgba(255,255,255,0.03);}
-  .scroll-hint{
-    position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
-    color:var(--dim); font-size:12px; font-family:'IBM Plex Mono', monospace;
-    animation:float 2s ease-in-out infinite;
+  .btn-primary{background:var(--grad);color:#0a120d;box-shadow:0 4px 24px rgba(95,208,138,0.25);}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(95,208,138,0.4);}
+  .btn-ghost{border:1px solid var(--border);color:var(--text);background:rgba(255,255,255,0.03);backdrop-filter:blur(6px);}
+  .btn-ghost:hover{transform:translateY(-3px);background:rgba(255,255,255,0.07);}
+  .scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:var(--dim);font-size:11px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;animation:float 2.2s ease-in-out infinite;}
+  @keyframes float{50%{transform:translate(-50%,9px);}}
+
+  /* ── marquee strip ── */
+  .marquee{
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    background:rgba(255,255,255,0.02);overflow:hidden;padding:16px 0;
+    mask-image:linear-gradient(90deg,transparent,black 12%,black 88%,transparent);
+    -webkit-mask-image:linear-gradient(90deg,transparent,black 12%,black 88%,transparent);
   }
-  @keyframes float{50%{transform:translate(-50%, 8px);}}
+  .marquee-track{display:flex;gap:44px;width:max-content;animation:scroll 26s linear infinite;}
+  .marquee-track span{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--dim);white-space:nowrap;display:flex;align-items:center;gap:44px;}
+  .marquee-track span::after{content:'◆';color:var(--green);font-size:9px;}
+  @keyframes scroll{to{transform:translateX(-50%);}}
 
   /* ── SECTIONS ── */
-  section{max-width:1040px; margin:0 auto; padding:80px 24px;}
+  section{max-width:1100px;margin:0 auto;padding:110px 24px 0;}
   .eyebrow{
-    font-family:'IBM Plex Mono', monospace; font-size:12px;
-    letter-spacing:0.14em; text-transform:uppercase;
-    color:var(--green); margin:0 0 10px;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.16em;
+    text-transform:uppercase;color:var(--green);margin:0 0 12px;display:flex;align-items:center;gap:12px;
   }
-  h2{
-    font-family:'Space Grotesk', sans-serif;
-    font-size:clamp(26px, 4vw, 36px); font-weight:700;
-    margin:0 0 32px; letter-spacing:-0.01em;
-  }
+  .eyebrow::after{content:'';height:1px;width:52px;background:linear-gradient(90deg,rgba(95,208,138,0.5),transparent);}
+  h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4.5vw,42px);font-weight:700;margin:0 0 14px;letter-spacing:-0.02em;}
+  .sec-sub{color:var(--dim);font-size:15px;max-width:560px;margin:0 0 44px;}
 
   /* about */
-  .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
-  @media (max-width:760px){ .about-grid{grid-template-columns:1fr;} }
+  .about-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;}
   .card{
-    background:var(--panel); border:1px solid var(--border);
-    border-radius:12px; padding:26px;
-    transition:border-color .2s, transform .2s;
+    background:var(--panel);border:1px solid var(--border);border-radius:16px;
+    padding:30px;backdrop-filter:blur(8px);
+    transition:border-color .25s,transform .25s,box-shadow .25s;position:relative;overflow:hidden;
   }
-  .card:hover{border-color:rgba(95,184,122,0.35); transform:translateY(-3px);}
-  .card .icon{font-size:26px; margin-bottom:12px;}
-  .card h3{font-family:'Space Grotesk', sans-serif; font-size:16px; margin:0 0 8px;}
-  .card p{color:var(--dim); font-size:14px; margin:0; line-height:1.65;}
+  .card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(95,208,138,0.5),transparent);
+    opacity:0;transition:opacity .25s;
+  }
+  .card:hover{border-color:rgba(95,208,138,0.3);transform:translateY(-4px);box-shadow:0 14px 44px rgba(0,0,0,0.35);}
+  .card:hover::before{opacity:1;}
+  .card .icon{font-size:26px;margin-bottom:16px;display:inline-block;background:rgba(95,208,138,0.09);border:1px solid rgba(95,208,138,0.2);border-radius:12px;padding:10px 13px;}
+  .card h3{font-family:'Space Grotesk',sans-serif;font-size:16.5px;margin:0 0 9px;}
+  .card p{color:var(--dim);font-size:14px;margin:0;line-height:1.7;}
+  .span-7{grid-column:span 7;}
+  .span-5{grid-column:span 5;}
+  @media (max-width:760px){ .span-7,.span-5{grid-column:span 12;} }
+  .hand{font-family:'Caveat',cursive;font-size:20px;color:var(--amber);}
 
   /* skills */
-  .skills{display:flex; flex-wrap:wrap; gap:10px;}
-  .skill{
-    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
-    padding:8px 16px; border-radius:20px;
-    background:var(--panel-2); border:1px solid var(--border); color:var(--text);
-    transition:border-color .15s, color .15s;
+  .skills-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media (max-width:760px){ .skills-wrap{grid-template-columns:1fr;} }
+  .skill-group{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:28px;backdrop-filter:blur(8px);}
+  .skill-group h3{font-family:'Space Grotesk',sans-serif;font-size:15px;margin:0 0 18px;color:var(--text);display:flex;align-items:center;gap:10px;}
+  .bar-row{margin-bottom:16px;}
+  .bar-row:last-child{margin-bottom:0;}
+  .bar-label{display:flex;justify-content:space-between;font-size:12.5px;font-family:'IBM Plex Mono',monospace;margin-bottom:7px;}
+  .bar-label .pct{color:var(--dim);}
+  .bar{height:6px;border-radius:3px;background:rgba(255,255,255,0.06);overflow:hidden;}
+  .bar i{display:block;height:100%;width:0;background:var(--grad);border-radius:3px;transition:width 1.2s cubic-bezier(.22,1,.36,1);}
+  .chips{display:flex;flex-wrap:wrap;gap:9px;align-content:flex-start;}
+  .chip{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;padding:8px 15px;border-radius:20px;
+    background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--dim);
+    transition:border-color .15s,color .15s,transform .15s;cursor:default;
   }
-  .skill:hover{border-color:var(--green); color:var(--green);}
+  .chip:hover{border-color:var(--green);color:var(--green);transform:translateY(-2px);}
 
   /* projects */
-  .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
   @media (max-width:760px){ .proj-grid{grid-template-columns:1fr;} }
   .proj{
-    background:var(--panel); border:1px solid var(--border);
-    border-radius:12px; padding:26px; text-decoration:none; color:var(--text);
-    display:block; transition:border-color .2s, transform .2s, box-shadow .2s;
+    background:var(--panel);border:1px solid var(--border);border-radius:16px;
+    padding:28px;text-decoration:none;color:var(--text);display:block;
+    transition:border-color .25s,transform .25s,box-shadow .25s;position:relative;overflow:hidden;backdrop-filter:blur(8px);
   }
-  .proj:hover{border-color:var(--green); transform:translateY(-4px); box-shadow:0 8px 30px rgba(95,184,122,0.08);}
-  .proj-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
+  .proj::after{
+    content:'';position:absolute;top:-60%;right:-30%;width:70%;height:120%;
+    background:radial-gradient(circle,rgba(95,208,138,0.07),transparent 70%);
+    opacity:0;transition:opacity .3s;pointer-events:none;
+  }
+  .proj:hover{border-color:rgba(95,208,138,0.35);transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
+  .proj:hover::after{opacity:1;}
+  .proj-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
   .proj-top .folder{font-size:24px;}
-  .proj-top .links{display:flex; gap:10px; font-family:'IBM Plex Mono', monospace; font-size:11.5px;}
-  .proj-top .links a{color:var(--focus); text-decoration:none;}
-  .proj h3{font-family:'Space Grotesk', sans-serif; font-size:17px; margin:0 0 10px;}
-  .proj p{color:var(--dim); font-size:13.5px; margin:0 0 16px; line-height:1.6;}
-  .proj .tags{display:flex; flex-wrap:wrap; gap:8px;}
+  .proj-top .arrow{color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:13px;transition:transform .2s,color .2s;}
+  .proj:hover .arrow{transform:translate(4px,-4px);color:var(--green);}
+  .proj h3{font-family:'Space Grotesk',sans-serif;font-size:18px;margin:0 0 10px;display:flex;align-items:center;flex-wrap:wrap;gap:8px;}
+  .proj p{color:var(--dim);font-size:13.5px;margin:0 0 18px;line-height:1.7;}
+  .proj .tags{display:flex;flex-wrap:wrap;gap:8px;}
   .proj .tags span{
-    font-family:'IBM Plex Mono', monospace; font-size:11px;
-    color:var(--green); background:rgba(95,184,122,0.08);
-    padding:4px 10px; border-radius:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--green);
+    background:rgba(95,208,138,0.08);border:1px solid rgba(95,208,138,0.15);
+    padding:4px 11px;border-radius:14px;
   }
-  .proj .badge{
-    display:inline-block; margin-left:8px; font-size:10px;
-    font-family:'IBM Plex Mono', monospace; color:var(--amber);
-    border:1px solid rgba(217,164,65,0.4); border-radius:10px; padding:2px 8px;
-    vertical-align:middle;
+  .badge{
+    display:inline-block;font-size:9.5px;font-family:'IBM Plex Mono',monospace;font-weight:500;
+    color:var(--amber);border:1px solid rgba(232,185,87,0.45);border-radius:10px;padding:2px 9px;
+    letter-spacing:0.06em;
   }
+  .badge.live{color:var(--green);border-color:rgba(95,208,138,0.45);}
+  .badge.live::before{content:'●';font-size:8px;margin-right:5px;animation:pulse 2s infinite;}
+
+  /* stats band */
+  .stats-band{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:20px;
+  }
+  @media (max-width:700px){ .stats-band{grid-template-columns:repeat(2,1fr);} }
+  .stat{background:var(--panel-solid);padding:26px 16px;text-align:center;}
+  .stat .num{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .stat .lbl{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);margin-top:5px;letter-spacing:0.06em;}
+  .footnote{color:#5b6070;font-size:11px;font-family:'IBM Plex Mono',monospace;margin-top:12px;}
 
   /* contact */
-  .contact-inner{text-align:center; max-width:560px; margin:0 auto;}
-  .contact-inner p{color:var(--dim); margin:0 0 28px; font-size:15px;}
-  .contact-links{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  .contact-box{
+    background:var(--panel);border:1px solid var(--border);border-radius:20px;
+    padding:56px 32px;text-align:center;backdrop-filter:blur(8px);position:relative;overflow:hidden;
+  }
+  .contact-box::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(420px 200px at 50% 0%,rgba(95,208,138,0.09),transparent);
+    pointer-events:none;
+  }
+  .contact-box h2{margin-bottom:10px;}
+  .contact-box p{color:var(--dim);max-width:460px;margin:0 auto 32px;font-size:15px;position:relative;}
+  .hand-large{font-family:'Caveat',cursive;font-size:22px;color:var(--amber);position:relative;}
 
   /* footer */
-  footer{
-    border-top:1px solid var(--border);
-    text-align:center; padding:32px 24px;
-    color:#5b6070; font-size:12.5px; font-family:'IBM Plex Mono', monospace;
-  }
+  footer{margin-top:110px;border-top:1px solid var(--border);text-align:center;padding:36px 24px;color:#5b6070;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
   footer .heart{color:var(--green);}
+  footer a{color:#7a8194;text-decoration:none;}
+  footer a:hover{color:var(--green);}
 
-  /* reveal animation */
-  .reveal{opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease;}
-  .reveal.visible{opacity:1; transform:none;}
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);}
+  .reveal.visible{opacity:1;transform:none;}
+  .reveal.d1{transition-delay:.08s;} .reveal.d2{transition-delay:.16s;} .reveal.d3{transition-delay:.24s;}
 </style>
 </head>
 <body>
 
-<nav>
+<div class="bg">
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+  <div class="orb orb-c"></div>
+  <div class="grid-overlay"></div>
+</div>
+<div id="progress"></div>
+
+<nav id="nav">
   <div class="nav-inner">
-    <a class="logo" href="#top">tere<span>naq</span></a>
+    <a class="logo" href="#top"><span class="dot"></span>teravenaq</a>
     <div class="nav-links">
       <a href="#about">Tentang</a>
       <a href="#skills">Skills</a>
       <a href="#projects">Project</a>
-      <a href="#contact">Kontak</a>
+      <a class="nav-cta" href="https://github.com/Teravenaq" target="_blank" rel="noopener">GitHub ↗</a>
     </div>
   </div>
 </nav>
 
 <header class="hero" id="top">
   <div class="hero-inner">
+    <div class="status-pill"><span class="dot"></span>open untuk kolaborasi & project baru</div>
     <div class="avatar-wrap">
       <img src="https://avatars.githubusercontent.com/u/309632267?v=4" alt="Avatar Teravenaq">
     </div>
-    <h1>Hai, aku <span>Teravenaq</span> 👋</h1>
-    <p class="tagline"><span id="typed"></span><span class="cursor">&nbsp;</span></p>
+    <h1>Hai, aku <span class="grad">Teravenaq</span></h1>
+    <p class="tagline"><span id="typed"></span><span class="cursor"></span></p>
+    <p class="hero-sub">Aku bikin tool web yang jalan <strong>100% di browser</strong> — cepat, privat, dan open source. Tanpa server perantara, tanpa install apapun.</p>
     <div class="hero-btns">
-      <a class="btn btn-primary" href="#projects">🚀 Lihat Project</a>
-      <a class="btn btn-ghost" href="https://github.com/Teravenaq" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn btn-primary" href="#projects">Lihat Project <span>→</span></a>
+      <a class="btn btn-ghost" href="https://github.com/Teravenaq" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
     </div>
   </div>
-  <div class="scroll-hint">▼ scroll</div>
+  <div class="scroll-hint">SCROLL ▼</div>
 </header>
 
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>GitHub API</span><span>Client-side First</span><span>Open Source</span><span>Git</span><span>Python</span><span>Node.js</span><span>Privacy by Design</span>
+    <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>GitHub API</span><span>Client-side First</span><span>Open Source</span><span>Git</span><span>Python</span><span>Node.js</span><span>Privacy by Design</span>
+  </div>
+</div>
+
 <section id="about">
-  <p class="eyebrow reveal">// tentang aku</p>
-  <h2 class="reveal">Kenalan dulu 🧠</h2>
+  <p class="eyebrow reveal">tentang aku</p>
+  <h2 class="reveal d1">Kode yang privat, hasil yang nyata</h2>
+  <p class="sec-sub reveal d2">Prinsipku sederhana: kalau sebuah tool bisa jalan sepenuhnya di browser pengguna, kenapa harus lewat server?</p>
   <div class="about-grid">
-    <div class="card reveal">
-      <div class="icon">🛠️</div>
-      <h3>Web Tooling</h3>
-      <p>Suka bikin tool yang jalan 100% di browser — tanpa server perantara, tanpa install apapun. Contohnya UpRepo: push file ke GitHub langsung dari browser tanpa git.</p>
+    <div class="card span-7 reveal">
+      <span class="icon">🛠️</span>
+      <h3>Web Tooling Client-side</h3>
+      <p>Semua project andalanku jalan tanpa backend — dari push file ke GitHub langsung dari browser sampai tooling utility lainnya. Arsitektur seperti ini bikin tool-ku instan dipakai: buka URL, langsung jalan.</p>
     </div>
-    <div class="card reveal">
-      <div class="icon">🔒</div>
-      <h3>Privasi Dulu</h3>
-      <p>Token & data nggak pernah dikirim ke tempat lain selain ke mana memang seharusnya. Semua proses client-side, transparan, dan bisa diaudit langsung dari source-nya.</p>
+    <div class="card span-5 reveal d1">
+      <span class="icon">🔒</span>
+      <h3>Privacy by Design</h3>
+      <p>Token & data pengguna tidak pernah menyentuh server pihak ketiga. Semua proses terjadi lokal dan bisa diaudit langsung dari source code yang terbuka.</p>
     </div>
-    <div class="card reveal">
-      <div class="icon">📖</div>
-      <h3>Berpendidikan Tinggi 🗿</h3>
-      <p>Baca buku, ngulik teknologi, dan terus belajar hal baru. Meme itu bukan sekadar meme — itu lifestyle.</p>
-    </div>
-    <div class="card reveal">
-      <div class="icon">⚡</div>
+    <div class="card span-5 reveal">
+      <span class="icon">⚡</span>
       <h3>Open Source</h3>
-      <p>Project yang kubikin terbuka untuk siapa saja. Fork, modif, perbaiki — dan kasih star kalau berguna ⭐</p>
+      <p>Semua karyaku terbuka. Fork, modif, perbaiki — dan kasih star kalau berguna ⭐ Pull request selalu welcome.</p>
+    </div>
+    <div class="card span-7 reveal d1">
+      <span class="icon">📖</span>
+      <h3>Selalu Belajar <span class="hand">— berpendidikan tinggi 🗿</span></h3>
+      <p>Baca buku, ngulik dokumentasi, rusak-perbaiki kode. Teknologi bergerak cepat, dan aku ikut bergerak. Meme itu bukan sekadar meme — itu filosofi hidup.</p>
     </div>
   </div>
 </section>
 
 <section id="skills">
-  <p class="eyebrow reveal">// tech stack</p>
-  <h2 class="reveal">Skills 🛠️</h2>
-  <div class="skills reveal">
-    <span class="skill">HTML5</span>
-    <span class="skill">CSS3</span>
-    <span class="skill">JavaScript (vanilla)</span>
-    <span class="skill">GitHub API</span>
-    <span class="skill">Git Data API</span>
-    <span class="skill">Python</span>
-    <span class="skill">Node.js</span>
-    <span class="skill">CodeMirror 6</span>
-    <span class="skill">JSZip</span>
-    <span class="skill">Git</span>
-    <span class="skill">Open Source</span>
-    <span class="skill">UI/UX Dark Mode 🌙</span>
+  <p class="eyebrow reveal">keahlian</p>
+  <h2 class="reveal d1">Tech stack</h2>
+  <p class="sec-sub reveal d2">Yang sering kupakai untuk membangun project.</p>
+  <div class="skills-wrap">
+    <div class="skill-group reveal">
+      <h3>⚡ Core</h3>
+      <div class="bar-row"><div class="bar-label"><span>HTML5 / CSS3</span><span class="pct">95%</span></div><div class="bar"><i data-w="95"></i></div></div>
+      <div class="bar-row"><div class="bar-label"><span>JavaScript (vanilla)</span><span class="pct">90%</span></div><div class="bar"><i data-w="90"></i></div></div>
+      <div class="bar-row"><div class="bar-label"><span>GitHub / Git Data API</span><span class="pct">85%</span></div><div class="bar"><i data-w="85"></i></div></div>
+      <div class="bar-row"><div class="bar-label"><span>UI/UX Dark Mode</span><span class="pct">92%</span></div><div class="bar"><i data-w="92"></i></div></div>
+    </div>
+    <div class="skill-group reveal d1">
+      <h3>🧰 Tools & Lainnya</h3>
+      <div class="chips">
+        <span class="chip">Git</span>
+        <span class="chip">Python</span>
+        <span class="chip">Node.js</span>
+        <span class="chip">CodeMirror 6</span>
+        <span class="chip">JSZip</span>
+        <span class="chip">esptool-js</span>
+        <span class="chip">GitHub Pages</span>
+        <span class="chip">Playwright</span>
+        <span class="chip">REST API</span>
+        <span class="chip">Telegram Bot API</span>
+      </div>
+    </div>
   </div>
 </section>
 
 <section id="projects">
-  <p class="eyebrow reveal">// project</p>
-  <h2 class="reveal">Karya 🚀</h2>
+  <p class="eyebrow reveal">project</p>
+  <h2 class="reveal d1">Karya pilihan</h2>
+  <p class="sec-sub reveal d2">Tool yang benar-benar kupakai dan kupelihara.</p>
   <div class="proj-grid">
     <a class="proj reveal" href="https://github.com/Teravenaq/uprepo" target="_blank" rel="noopener">
-      <div class="proj-top">
-        <span class="folder">📂</span>
-        <span class="links"><span>GitHub ↗</span></span>
-      </div>
-      <h3>UpRepo <span class="badge">LIVE</span></h3>
-      <p>Push file langsung ke repo GitHub dari browser — tanpa git, tanpa install apapun. Support auto-extract ZIP jadi satu commit, auto-create repo, dan 100% client-side. Token nggak pernah keluar dari browser.</p>
-      <div class="tags">
-        <span>HTML</span><span>JavaScript</span><span>GitHub API</span><span>JSZip</span>
-      </div>
+      <div class="proj-top"><span class="folder">📂</span><span class="arrow">↗</span></div>
+      <h3>UpRepo <span class="badge live">LIVE</span></h3>
+      <p>Push file langsung ke repo GitHub dari browser — tanpa git, tanpa install. Auto-extract ZIP jadi satu commit, auto-create repo, dan arsitektur blob → tree → commit → ref murni client-side.</p>
+      <div class="tags"><span>HTML</span><span>JavaScript</span><span>GitHub API</span><span>JSZip</span></div>
     </a>
-    <a class="proj reveal" href="https://github.com/Teravenaq" target="_blank" rel="noopener">
-      <div class="proj-top">
-        <span class="folder">📂</span>
-        <span class="links"><span>GitHub ↗</span></span>
-      </div>
-      <h3>Portofolio Ini <span class="badge">BARU</span></h3>
-      <p>Situs portofolio yang sedang kamu lihat — satu file HTML, hosted gratis di GitHub Pages, dengan animasi typing, reveal on scroll, dan dark mode aesthetic. Yeah, meta banget 🗿</p>
-      <div class="tags">
-        <span>HTML</span><span>CSS</span><span>GitHub Pages</span>
-      </div>
+    <a class="proj reveal d1" href="https://teravenaq.github.io/portofolio/" target="_blank" rel="noopener">
+      <div class="proj-top"><span class="folder">📂</span><span class="arrow">↗</span></div>
+      <h3>Portofolio Ini <span class="badge">META 🗿</span></h3>
+      <p>Situs yang sedang kamu lihat — satu file HTML, tanpa framework, tanpa build step. Animasi ambient orbs, typing effect, scroll reveal, dan progress bar. Hosted gratis di GitHub Pages.</p>
+      <div class="tags"><span>HTML</span><span>CSS</span><span>Vanilla JS</span></div>
     </a>
     <a class="proj reveal" href="https://github.com/Teravenaq/Teravenaq" target="_blank" rel="noopener">
-      <div class="proj-top">
-        <span class="folder">📂</span>
-        <span class="links"><span>GitHub ↗</span></span>
-      </div>
+      <div class="proj-top"><span class="folder">📂</span><span class="arrow">↗</span></div>
       <h3>Profile README</h3>
-      <p>README profil GitHub dengan banner animasi, typing SVG, GitHub stats, tech badges, dan visitor counter — semua dengan tema custom yang nyambung sama brand UpRepo.</p>
-      <div class="tags">
-        <span>Markdown</span><span>capsule-render</span><span>shields.io</span>
-      </div>
+      <p>Profil GitHub dengan banner animasi, typing SVG, live stats, tech badges, dan visitor counter — custom theme yang nyambung dengan brand UpRepo.</p>
+      <div class="tags"><span>Markdown</span><span>capsule-render</span><span>shields.io</span></div>
     </a>
-    <div class="proj reveal" style="opacity:0.75; cursor:default;">
-      <div class="proj-top">
-        <span class="folder">📂</span>
-      </div>
-      <h3>Coming Soon…</h3>
-      <p>Project berikutnya masih digodok. Follow biar nggak ketinggalan 👀</p>
-      <div class="tags">
-        <span>TBA</span><span>TBA</span><span>TBA</span>
-      </div>
+    <div class="proj reveal d1" style="cursor:default;">
+      <div class="proj-top"><span class="folder">📂</span></div>
+      <h3>Selanjutnya…</h3>
+      <p>Project berikutnya masih digodok. Follow GitHub-ku biar nggak ketinggalan rilisnya 👀</p>
+      <div class="tags"><span>TBA</span><span>TBA</span><span>TBA</span></div>
     </div>
   </div>
+
+  <div class="stats-band reveal">
+    <div class="stat"><div class="num" data-count="3">0</div><div class="lbl">PROJECT PUBLIC</div></div>
+    <div class="stat"><div class="num" data-count="100">0</div><div class="lbl">% CLIENT-SIDE</div></div>
+    <div class="stat"><div class="num" data-count="4">0</div><div class="lbl">BUG DIPERBAIKI*</div></div>
+    <div class="stat"><div class="num" data-count="1">0</div><div class="lbl">PULL REQUEST</div></div>
+  </div>
+  <p class="footnote reveal">* di repo fork uprepo — dihitung dari PR #1 😄</p>
 </section>
 
 <section id="contact">
-  <div class="contact-inner">
-    <p class="eyebrow reveal">// kontak</p>
-    <h2 class="reveal">Ngobrol dulu? 📫</h2>
-    <p class="reveal">Punya ide project, mau kolaborasi, atau cuma mau nyapa? Mampir aja ke GitHub-ku.</p>
-    <div class="contact-links reveal">
-      <a class="btn btn-primary" href="https://github.com/Teravenaq" target="_blank" rel="noopener">GitHub ↗</a>
+  <div class="contact-box reveal">
+    <p class="eyebrow" style="justify-content:center;">kontak</p>
+    <h2>Punya ide project?</h2>
+    <p>Mau kolaborasi, butuh tool custom, atau cuma mau nyapa? Pintu selalu terbuka — mampir aja.</p>
+    <div class="hero-btns">
+      <a class="btn btn-primary" href="https://github.com/Teravenaq" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
+      <a class="btn btn-ghost" href="https://github.com/Teravenaq/Teravenaq" target="_blank" rel="noopener">Profile README</a>
     </div>
+    <p class="hand-large" style="margin-top:28px;">— Teravenaq 🗿</p>
   </div>
 </section>
 
 <footer>
-  Dibuat dengan <span class="heart">❤</span> dan 🗿 oleh Teravenaq — 2026
+  Dibuat dengan <span class="heart">❤</span> &nbsp;+&nbsp; 🗿 &nbsp;oleh <a href="https://github.com/Teravenaq">Teravenaq</a> — 2026 · <a href="https://github.com/Teravenaq/portofolio">source ↗</a>
 </footer>
 
 <script>
-// ── typing animation ──
-const phrases = [
-  'Web Developer 🌐',
-  'Open Source Enthusiast 🚀',
-  'Browser Tooling Specialist 🔧',
-  'Berpendidikan Tinggi 📖👆'
-];
+// typing
+const phrases = ['Web Developer 🌐','Open Source Builder 🚀','Client-side Specialist 🔧','Berpendidikan Tinggi 📖👆'];
 const typedEl = document.getElementById('typed');
-let pi = 0, ci = 0, deleting = false;
-function tick(){
+let pi=0, ci=0, del=false;
+(function tick(){
   const cur = phrases[pi];
-  if (!deleting){
-    ci++;
-    typedEl.textContent = cur.slice(0, ci);
-    if (ci === cur.length){ deleting = true; return setTimeout(tick, 2000); }
-    setTimeout(tick, 65);
-  } else {
-    ci--;
-    typedEl.textContent = cur.slice(0, ci);
-    if (ci === 0){ deleting = false; pi = (pi+1) % phrases.length; return setTimeout(tick, 400); }
-    setTimeout(tick, 32);
-  }
-}
-tick();
+  if(!del){ ci++; typedEl.textContent=cur.slice(0,ci);
+    if(ci===cur.length){del=true;return setTimeout(tick,2100);} return setTimeout(tick,62); }
+  ci--; typedEl.textContent=cur.slice(0,ci);
+  if(ci===0){del=false;pi=(pi+1)%phrases.length;return setTimeout(tick,420);} setTimeout(tick,30);
+})();
 
-// ── reveal on scroll ──
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, {threshold: 0.12});
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// nav scroll state + progress bar
+const nav=document.getElementById('nav'), prog=document.getElementById('progress');
+addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled', scrollY>40);
+  const h=document.documentElement.scrollHeight-innerHeight;
+  prog.style.width=(scrollY/h*100)+'%';
+},{passive:true});
+
+// reveal + skill bars + counters
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(!e.isIntersecting) return;
+    e.target.classList.add('visible');
+    e.target.querySelectorAll('.bar i').forEach(b=>b.style.width=b.dataset.w+'%');
+    e.target.querySelectorAll('[data-count]').forEach(n=>{
+      const target=+n.dataset.count; let v=0;
+      const step=Math.max(1,Math.ceil(target/40));
+      const t=setInterval(()=>{v+=step; if(v>=target){v=target;clearInterval(t);} n.textContent=v;},35);
+    });
+    io.unobserve(e.target);
+  });
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
